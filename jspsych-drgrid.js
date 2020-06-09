@@ -3,11 +3,19 @@
  * Custom plugin for drawing a scatterplot.
  */
 
+function fillArray(value, len) {
+  var arr = [];
+  for (var i = 0; i < len; i++) {
+    arr.push(value);
+  }
+  return arr;
+}
+
 jsPsych.plugins['dr-grid'] = (function() {
 
   var plugin = {};
 
-  jsPsych.pluginAPI.registerPreload('draw-scatterplot', 'stimuli', 'image');
+  jsPsych.pluginAPI.registerPreload('dr-grid', 'stimuli', 'image');
 
   plugin.info = {
     name: 'dr-grid',
@@ -16,7 +24,7 @@ jsPsych.plugins['dr-grid'] = (function() {
       drgrid: {
         type: jsPsych.plugins.parameterType.FUNCTION,
         pretty_name: 'Grid of projections',
-        default: null,
+        default: Grid,
         description: 'Create one specific instance of grids.'
       },
       prompt: {
@@ -35,7 +43,7 @@ jsPsych.plugins['dr-grid'] = (function() {
       button_label: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Button label',
-        default:  'Continue',
+        default:  'Finish!',
         description: 'The text that appears on the button to continue to the next trial.'
       }
     }
@@ -52,7 +60,7 @@ jsPsych.plugins['dr-grid'] = (function() {
       html += trial.prompt;
     }
 
-    html += '<div id="jspsych-draw-scatterplot-area"></div>';
+    html += '<div id="jspsych-grid-area" class="container-fluid"></div>';
 
     // check if prompt exists and if it is shown below
     if (trial.prompt !== null && trial.prompt_location == 'below') {
@@ -60,27 +68,25 @@ jsPsych.plugins['dr-grid'] = (function() {
     }
 
     display_element.innerHTML = html;
-    display_element.innerHTML += '<button id="jspsych-draw-scatterplot-done-btn" class="jspsych-btn" disabled>'+trial.button_label+'</button>';
+    display_element.innerHTML += '<button id="jspsych-done-btn" class="jspsych-btn" disabled>'+trial.button_label+'</button>';
 
     // Initialize scatterplot
     let grid = new trial.drgrid({
-      parentElement: '#jspsych-draw-scatterplot-area',
-      containerWidth: 300,
-      containerHeight: 300
+      parentElement: '#jspsych-grid-area',
+      containerWidth: 600,
+      containerHeight: 600,
+      rows:5,
+      cols:4,
+      images: fillArray('img/stanfordfaces_size50_call_UMAP_n7_d0.5.png', 20)
     });
 
-    display_element.querySelector('.tracking-area').addEventListener('click', function() {
-      if (display_element.querySelectorAll('.point').length >= trial.min_points) {
-        document.getElementById('jspsych-draw-scatterplot-done-btn').disabled = false;
-      }
-    });
 
-    display_element.querySelector('#jspsych-draw-scatterplot-done-btn').addEventListener('click', function() {
+    display_element.querySelector('#jspsych-done-btn').addEventListener('click', function() {
       const end_time = performance.now();
       const rt = end_time - start_time;
 
       // Get final position of all objects
-      const positions = scatterplot.getAllCoordinates();
+      const positions = grid.getAllCoordinates();
 
       const trial_data = {
         "rt": rt,

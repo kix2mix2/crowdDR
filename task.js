@@ -61,12 +61,12 @@ var scaterplot_trial = {
 var drgrid_trial = {
     type:'dr-grid',
     prompt: 'yo yo',
-    drgrid: Scatterplot
+    drgrid: Grid
 
 };
 
-timeline.push(instructions_block_1);
-timeline.push(scaterplot_trial);
+// timeline.push(instructions_block_1);
+// timeline.push(scaterplot_trial);
 timeline.push(drgrid_trial);
 // timeline.push(instructions_block_3);
 
@@ -78,7 +78,7 @@ jsPsych.data.addProperties({
 });
 
 jsPsych.init({
-    display_element: 'jspsych-target',
+    display_element: 'task',
     exclusions: {
         min_width: 800,
         min_height: 600
