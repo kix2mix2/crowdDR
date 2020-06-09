@@ -1,4 +1,4 @@
-class DRGrid {
+class Grid {
 
     function;
     function;

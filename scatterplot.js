@@ -1,8 +1,4 @@
 class Scatterplot {
-
-    function;
-    function;
-
     constructor(_config) {
         this.config = {
             parentElement: _config.parentElement,
@@ -41,16 +37,16 @@ class Scatterplot {
                 vis.addPoint(d3.mouse(this));
             });
 
-        vis.yAxis = vis.chart.append('line')
-            .attr('class', 'axis')
-            .attr('y2', vis.height);
-
-        vis.xAxis = vis.chart.append('line')
-            .attr('class', 'axis')
-            .attr('y1', vis.height)
-            .attr('y2', vis.height)
-            .attr('x1', 0)
-            .attr('x2', vis.width);
+        // vis.yAxis = vis.chart.append('line')
+        //     .attr('class', 'axis')
+        //     .attr('y2', vis.height);
+        //
+        // vis.xAxis = vis.chart.append('line')
+        //     .attr('class', 'axis')
+        //     .attr('y1', vis.height)
+        //     .attr('y2', vis.height)
+        //     .attr('x1', 0)
+        //     .attr('x2', vis.width);
     }
 
     render() {
@@ -72,7 +68,8 @@ class Scatterplot {
             .attr("cx", x)
             .attr("cy", y)
             .attr("r", size)
-            .style('fill', function(){return d3.interpolateTurbo(size/20)});
+            .style('fill', function(){return d3.interpolateTurbo(size/20)})
+            .style('pointer-events', 'none');
     }
 
     addPoint(mouse) {
